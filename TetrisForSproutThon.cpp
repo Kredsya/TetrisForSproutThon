@@ -103,7 +103,7 @@ void start() {
 
 void draw_frame() {         //게임 화면 틀
     system("cls");
-    x = 2, y = 1;                                   //*좌표 초기화
+    x = 2, y = 1;           //*좌표 초기화       //@도엽: 질문 - 왜 초기 좌표가 (2, 1)인가요
 
     for (int i = 0; i < FR_SIZE_WIDTH + 2; i++) {
         printf(WALL_MARK);
