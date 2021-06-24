@@ -55,7 +55,7 @@ void init() {
 
     CONSOLE_CURSOR_INFO curInfo;                        //커서를 숨기는 코드
     curInfo.dwSize = 1;
-    curInfo.bVisible = false;                           //false이면 invisible, true이면 visible
+    curInfo.bVisible = true;                           //false이면 invisible, true이면 visible
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
 }
 

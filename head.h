@@ -10,6 +10,16 @@
 
 using namespace std;
 
+#define curColor(colorCode) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colorCode);
+#define NORMAL 15 //NORMAL
+#define J 1
+#define S 10
+#define I 11
+#define Z 4
+#define T 5
+#define O 6
+#define L 12
+
 const string NONE_MARK  = "  ";
 const string BLOCK_MARK = "бс";
 const string WALL_MARK  = "бр";

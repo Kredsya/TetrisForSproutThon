@@ -6,6 +6,11 @@
 	- 상수
 		- FR_SIZE_WIDTH, DOWN 등의 매크로를 const int형 변수로 선언. (define과 똑같이 후에 변경할 수 없습니다)
 		- NONE_BLOCK 등은 const string형으로 선언.
+	- #define curColor
+		- 글씨 색을 바꾸는 함수를 매크로로 지정했습니다.
+		- 사용법은 curColor(글자색 코드); 가 끝입니다. //ex) curColor(3);
+		- 이에 대해서 필요한 색들은 미리 밑에 매크로로 추가시켜놨습니다.
+		- 배경색은 필요가 없어 생략, 글자색만 변경할 수 있습니다.
 
 2. init() 함수 추가
 	- 게임 설정과 관련된 함수
