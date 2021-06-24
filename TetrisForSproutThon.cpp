@@ -11,7 +11,7 @@ void game_over();
 void exit_game();
 //void game_move(int*, int*, int*);
 
-int x = 2, y = 1;                                             //*이동 좌표 
+int x = 2, y = 1;
 int key;
 bool block[20][10];
 int score = 0;               // 점수
