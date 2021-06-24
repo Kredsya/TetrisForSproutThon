@@ -1,18 +1,24 @@
-#include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
+#include <ctime>
 #include <windows.h>
 #include <conio.h>
-#include <time.h>
 
-#define NONE_MARK	"  "
-#define BLOCK_MARK	"бс"
-#define WALL_MARK	"бр"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <deque>
 
-#define FR_SIZE_WIDTH	10
-#define FR_SIZE_HEIGHT	20
+using namespace std;
 
-#define DOWN	80
-#define LEFT	75
-#define RIGHT	77
-#define SPACE	32
-#define ESC		27
+const string NONE_MARK  = "  ";
+const string BLOCK_MARK = "бс";
+const string WALL_MARK  = "бр";
+
+const int FR_SIZE_WIDTH  = 10;
+const int FR_SIZE_HEIGHT = 20;
+
+const int DOWN	= 80;
+const int LEFT	= 75;
+const int RIGHT = 77;
+const int SPACE = 32;
+const int ESC	= 27;
