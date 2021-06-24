@@ -103,7 +103,7 @@ void start() {
 
 void draw_frame() {         //게임 화면 틀
     system("cls");
-    x = 2, y = 1;           //*좌표 초기화       //@도엽: 질문 - 왜 초기 좌표가 (2, 1)인가요
+    x = 2, y = 1;           //*좌표 초기화
 
     for (int i = 0; i < FR_SIZE_WIDTH + 2; i++) {
         printf(WALL_MARK);
@@ -125,7 +125,7 @@ void draw_frame() {         //게임 화면 틀
         if (2 <= i && i <= 9) {                //다음 블럭 보여줄 칸
             printf(NONE_MARK);
             printf(WALL_MARK);
-            for (int j = 0; j < 5; j++) {       //@도엽: for와 if가 반대였으면 좋았을지도
+            for (int j = 0; j < 5; j++) {
                 if (i == 2 || i == 9) {
                     printf(WALL_MARK);
                 }
