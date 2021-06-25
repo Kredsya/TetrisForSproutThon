@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <utility>
 
 using namespace std;
 
@@ -20,15 +21,16 @@ using namespace std;
 #define O 6
 #define L 12
 
-const string NONE_MARK  = "  ";
-const string BLOCK_MARK = "бс";
-const string WALL_MARK  = "бр";
+const string NONE_MARK = "  ";
+const string WALL_MARK = "бс";
+const string BLOCK_MARK = "бр";
 
-const int FR_SIZE_WIDTH  = 10;
+const int FR_SIZE_WIDTH = 10;
 const int FR_SIZE_HEIGHT = 20;
 
-const int DOWN	= 80;
-const int LEFT	= 75;
+const int UP = 72;
+const int DOWN = 80;
+const int LEFT = 75;
 const int RIGHT = 77;
 const int SPACE = 32;
-const int ESC	= 27;
+const int ESC = 27;
