@@ -1,0 +1,31 @@
+1. head.h
+	- 헤더파일
+		- c++에서 c헤더파일임을 강조(실사용에서는 달라진 점 X) : stdlib.h => cstdlib
+		- vector와 deque, string 헤더파일 추가
+		- "using namespace std;" 코드를 삽입. 이제 cout이나 vector앞에 std:: 안붙여도 되도록 조치했습니다.
+	- 상수
+		- FR_SIZE_WIDTH, DOWN 등의 매크로를 const int형 변수로 선언. (define과 똑같이 후에 변경할 수 없습니다)
+		- NONE_BLOCK 등은 const string형으로 선언.
+
+2. init() 함수 추가
+	- 게임 설정과 관련된 함수
+	- ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL); 코드 삽입.
+	- <stdio.h>를 사용하지 않을 때 iostream의 속도를 높여줄 수 있는 코드입니다.
+	- main()함수에서 title()앞에서 호출되도록 했습니다.
+	- system("mode con cols=60 lines=25 | title TETRIS SproutThon"); 코드를 init()함수으로 옮겼습니다.
+
+3. 마우스 커서 숨기기 기능 추가
+	- init()함수 안에 마우스 커서를 숨기고 보이게 하는 코드를 삽입.
+	- curInfo.bVisible을 조작하는 것으로 설정 가능.
+		- true이면 visible, false이면 invisible합니다.
+		- 현재는 디버깅을 위해서 true로 설정해두었습니다. 마무리 날에 false로 바꾸면 됩니다.
+
+3. std::cout을 cout으로 교체
+	- 앞서 {1. head.h}에서 설정해두어서 전부 cout으로 교체.
+
+4. 주석 카테고리 추가
+	- player_move()함수의 switch문 앞의 두 줄의 주석 앞에 @todo태그 추가. 그 외에도 유사한 성격을 띄는 주석 앞에 추가.
+	- 특별한 기능은 없지만, 코드 설명 주석과 구분하기 위해서 추가했습니다.
+
+5. gotoxy(int, int) 함수 위치 이전
+	- main()함수가 가장 위로 오도록 변경했습니다.
