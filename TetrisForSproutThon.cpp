@@ -19,7 +19,7 @@ void exit_game();
 void player_move(int);
 void draw_board(int);
 
-struct BlockData {
+typedef struct BlockData {
     int type;
     int rot = 0;
 };
@@ -35,6 +35,9 @@ BlockData holdBlock;
 
 int main() {
     int ch;
+    float ti;
+    clock_t st, end;
+    st = clock();
 
     init();
     title();
@@ -63,7 +66,16 @@ int main() {
                 draw_board(i);                   //다시 그리기
             }
         }
+
+        end = clock();                              //1초마다 블록 낙하
+        ti = ((float)(end - st) / CLOCKS_PER_SEC);
+        if (ti >= 1) { 
+            player_move(DOWN);
+            st = clock();
+        }
     }
+
+}
 
     return 0;
 }
@@ -149,11 +161,12 @@ void draw_board(int n) {            //@todo: 보드를 다시 그릴 때 이동�
 }
 
 void player_move(int ch) {       //*다 쌓이면 game_over로 이동
+    int a = x;              //원래 xy좌표 저장
+    int b = y;
 
     cout << "\b\b";
     cout << NONE_MARK;
 
-    //@todo: block배열 비교로 못 움직이게 추가
     //@todo: up으로 회전 추가
 
     switch (ch) {
@@ -175,6 +188,9 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
             x = 36;
         break;
     }
+
+    if (mapData[21 - y].first[x - 18])          //@todo: mapData 비교로 못 움직이게 추가
+        x = a, y = b;
 
     gotoxy(x, y);
     cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
@@ -226,7 +242,6 @@ void draw_frame() {         //게임 화면 틀
     gotoxy(x, y);
     cout << BLOCK_MARK;                 //처음 플레이어 위치 표시용 (플레이어 움직임 시연용)
 
-    
 }
 
 void start() {
