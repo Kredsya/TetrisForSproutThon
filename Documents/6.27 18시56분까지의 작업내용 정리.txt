@@ -1,0 +1,53 @@
+1. head.h
+	- 후에 서술할 BlockData 구조체 중 type은 head.h의 17~23번째 줄에 나와있는 각 블럭의 숫자값으로 하고자 합니다.
+	- int blockShape[][][][]
+		- 우선 4차원 배열이라 당황스러우셨으리라 생각됩니다...
+		- 각각의 index는 다음의 뜻을 가지고 있습니다
+			- BlockData.type
+			- BlockData.rot
+			- 4 (테트리미노는 4개의 네모로 구성)
+			- (x, y) 블럭의 중심에 대한 각 네모칸의 상대좌표
+		- 블럭의 중심은 다음과 같습니다.
+			□□□□
+			□■□□
+			□□□□
+			□□□□
+		- 예를들어 Z블럭의 값을 참고하고 싶다면 다음과 같이 불러올 수 있습니다. (정말 예시에 불과합니다. 메뉴얼이 아닙니다!)
+			BlockData nowBlock = {Z, 0};
+			int xx, yy;
+			for(int i=0; i<4; i++) {
+				xx = x + blockShape[nowMino.type][nowMino.rot][i][0];
+				yy = y + blockShape[nowMino.type][nowMino.rot][i][1];
+				gotoxy(xx, yy);
+				cout << BLOCK_MARK;
+			}
+		- 아직 작업중에 있습니다.
+
+2. struct BlockData
+	- 각 블럭의 데이터를 담는 구조체입니다.
+	- type : 어떤 블럭인지 (head.h 17~23 참고)
+	- rot : 어떤 회전 상태인지 (0 - 초기, 1 - Right, 2 - 180도, 3 - Left)
+
+3. deque<BlockData> nextBlock
+	- 다음 블럭들을 담는 컨테이너 (미리보기에도 관여)
+	- {4번 fillNextBlock}에서 nextBlock 덱에 데이터를 집어넣을 것입니다.
+
+4. void fillNextBlock()
+	- 동작 원리
+		- vector<pair<int, int>> random 벡터 생성
+		- i와 함께 랜덤한 정수를 push_back
+		- 랜덤한 정수를 기준으로 정렬
+		- 이를 nextBlock에 push_back
+
+5. fallingBlock, holdBlock
+	- 미구현
+	- 변수명과 같이 fallingBlock = 떨어지는 블럭, holdBlock = 홀드에 들어가 있는 블럭
+
+6. init() 변경사항
+	- fillNextBlock() 함수 두 번 실행
+		- 7-bag이 두 번 들어가 있어야 미리보기에서 에러 X
+
+7. draw_block(BlockData, int x, int y)
+	- {1번 head.h}에서 상술했듯이 블럭을 이 함수로 처리할 것입니다.
+	- 호출 위치는 player_move(int) 가장 맨 밑으로 예상중입니다.
+	- 호출 전에는 이동할 수 있을것인지에 대한 체크가 있어야 할 것입니다.

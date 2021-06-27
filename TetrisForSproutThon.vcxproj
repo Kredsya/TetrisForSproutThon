@@ -144,6 +144,9 @@
   <ItemGroup>
     <ClInclude Include="head.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Documents\6.27 18시56분까지의 작업내용 정리.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

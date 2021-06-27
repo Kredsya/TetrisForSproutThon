@@ -10,25 +10,31 @@ void gotoxy(int, int);
 void init();
 void title();
 void start();
+void fillNextBlock();
 void play_menu();
 void draw_frame();
+void draw_block(BlockData, int, int);
 void game_over();
 void exit_game();
 void player_move(int);
 void draw_board(int);
 
+struct BlockData {
+    int type;
+    int rot = 0;
+};
+
 int x = 26, y = 1;
 int key;
 int score = 0;               // 점수
-vector<pair<vector<bool>, int> > mapData;
+vector<pair<vector<bool>, int>> mapData;
 vector<bool> emptyLine(10, false);	//vector constructor 중 하나 : 변수명(개수, 초기화할 데이터);
+deque<BlockData> nextBlock;
+BlockData fallingBlock;
+BlockData holdBlock;
 
 int main() {
     int ch;
-    //mapData 생성
-    for (int i = 0; i < 23; i++) {
-        mapData.push_back(make_pair(emptyLine, 0));	//make_pair : 말그대로 pair를 만들어 return하는 함수
-    }
 
     init();
     title();
@@ -68,6 +74,15 @@ void gotoxy(int a, int b) {
 }
 
 void init() {
+    for (int i = 0; i < 23; i++) {      //mapData 생성
+        mapData.push_back(make_pair(emptyLine, 0));	//make_pair : pair를 만들어 return하는 함수
+    }
+
+    srand((unsigned int)time(0));
+    
+    fillNextBlock();
+    fillNextBlock();
+
     system("mode con cols=60 lines=25 | title TETRIS SproutThon");
 
     ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);    //고속 cout을 위한 코드
@@ -96,6 +111,24 @@ void title() {
             key = _getch();
             break;
         }
+    }
+}
+
+void fillNextBlock() {
+    vector<pair<int, int>> random;
+    for (int i = 0; i < 7; i++) 
+        random.push_back(make_pair(i, rand()));
+
+    sort(random.begin(), random.end(), [](auto a, auto b) {
+        if (a.second > b.second) return true;
+        else return false;
+    });
+
+    for (int i = 0; i < 7; i++) {
+        BlockData tmp;
+        tmp.type = random[i].first;
+        tmp.rot = 0;
+        nextBlock.push_back(tmp);
     }
 }
 
@@ -145,6 +178,17 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
 
     gotoxy(x, y);
     cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
+                                
+                               //@todo: 옮길 수 있는 것인지에 대한 체크가 선행되어야 함
+                                //@todo: draw_block으로 블럭 그리기를 할 예정
+}
+
+void draw_block(BlockData block, int x, int y) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+
+        }
+    }
 }
 
 void draw_frame() {         //게임 화면 틀
