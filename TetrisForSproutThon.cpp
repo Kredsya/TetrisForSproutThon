@@ -79,6 +79,8 @@ int main() {
                 mapData.push_back(make_pair(emptyLine, 0));
                 draw_board(0);                   //다시 그리기
                 score += 20;                //줄 지워서 점수 획득
+                gotoxy(0, 0);
+                cout << "SCORE: " << score;
             }
         }
 
@@ -88,7 +90,8 @@ int main() {
             player_move(DOWN);
             st = clock();
         }
-    }
+
+    }   
 
     return 0;
 }
@@ -247,6 +250,8 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
         draw_board(true);
         x = 26, y = 1;
         score += 10;                //블럭 쌓아서 점수 획득
+        gotoxy(0, 0);
+        cout << "SCORE: " << score;
         nowBlock = nextBlock.front();   //다음 블럭을 뽑아놓기
         nextBlock.pop_front();
         getOutCnt++;
@@ -258,6 +263,7 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
         //cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
     draw_block();
 }
+
 void erase_block(int a, int b) {
     int A, B;
     for (int i = 0; i < 4; i++) {
@@ -273,12 +279,9 @@ void draw_nextBlock() {
     int a, b;
 
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 4; j++) {
-            a = 44 + blockShape[nowBlock.type][0][j][0];
-            b = 6 * i + 3 + blockShape[nowBlock.type][0][j][1];
-
-            gotoxy(a, b);
-            cout << NONE_MARK;
+        for (int j = 0; j < 2; j++) {
+            gotoxy(42, 6 * i + 2 + j);
+            cout << "            ";
         }
         for (int k = 0; k < 4; k++) {
             a = 44 + blockShape[nextBlock[i].type][0][k][0];
@@ -288,7 +291,6 @@ void draw_nextBlock() {
             cout << BLOCK_MARK;
         }
     }
-
 }
 
 void draw_block() {
@@ -332,6 +334,9 @@ void draw_frame() {         //게임 화면 틀
         cout << NONE_MARK;
     for (int i = 0; i < FR_SIZE_WIDTH + 2; i++)
         cout << WALL_MARK;
+    
+    gotoxy(0, 0);
+    cout << "SCORE: " << score;
 
     draw_nextBlock();
 }
