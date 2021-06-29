@@ -29,7 +29,6 @@ struct BlockData {
 int x = 26, y = 1;
 int key;
 int cnt = 0;        //쌓기 판정용
-bool fall = false;
 int score = 0;               // 점수
 int getOutCnt = 1;
 vector<pair<vector<bool>, int>> mapData;
@@ -203,7 +202,6 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
         break;
     case DOWN:
         y++;
-        fall = true;
         if (y > 20)
             y = 20;
         break;
@@ -233,14 +231,12 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
         }
     }
 
-    if (x == a && y == b && fall) { //움직이지 못했을 경우   //@todo: 공중에서 옆벽면에 비빌 때 cnt++되어 공중에 블럭이 생기는 case 발생
+    if (x == a && y == b && ch == DOWN) { //움직이지 못했을 경우   //@todo: 공중에서 옆벽면에 비빌 때 cnt++되어 공중에 블럭이 생기는 case 발생
         cnt++;
-        fall = false;
     }
 
     if (cnt == 3) {
         cnt = 0;
-        fall = false;
         for (int i = 0; i < 4; i++) {       //mapData 갱신
             int dx = blockShape[nowBlock.type][nowBlock.rot][i][0];
             int dy = blockShape[nowBlock.type][nowBlock.rot][i][1];
