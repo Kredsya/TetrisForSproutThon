@@ -128,8 +128,9 @@ void title() {
     cout << "      ■     ■■■     ■     ■■■     ■     ■■■\n";
     cout << "      ■     ■         ■     ■ ■      ■         ■\n";
     cout << "      ■     ■■■     ■     ■  ■   ■■■   ■■■\n\n\n\n";
-    cout << "                      ◀ ▶ : MOVE\n";
-    cout << "                        ▼  : SOFT DROP\n";
+    cout << "                       ▲   : ROTATION\n";
+    cout << "                     ◀  ▶ : MOVE\n";
+    cout << "                       ▼   : SOFT DROP\n";
     cout << "                      SPACE : HARD DROP\n\n\n";
     cout << "                       ESC  : MENU\n\n";
     cout << "                   PRESS ANY KEY TO START";
