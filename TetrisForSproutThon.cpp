@@ -197,6 +197,9 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
 
     switch (ch) {
     case UP:
+        nowBlock.rot++;
+        if (nowBlock.rot > 4)
+            nowBlock.rot = 1;
         break;
     case DOWN:
         y++;
