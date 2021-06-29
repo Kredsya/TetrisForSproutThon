@@ -14,11 +14,12 @@ void start();
 void fillNextBlock();
 void play_menu();
 void draw_frame();
-void draw_block(int, int);
+void draw_block();
 void game_over();
 void exit_game();
 void player_move(int);
 void draw_board(bool);
+void erase_block(int, int);
 
 struct BlockData {
     int type;
@@ -68,7 +69,7 @@ int main() {
                         break;
                 }
             }
-                                                //@todo: 홀드 구현시 shift 추가 
+            //@todo: 홀드 구현시 shift 추가 
 
         }
 
@@ -83,7 +84,7 @@ int main() {
 
         end = clock();                              //1초마다 블록 낙하
         ti = ((float)(end - st) / CLOCKS_PER_SEC);
-        if (ti >= 1) { 
+        if (ti >= 1) {
             player_move(DOWN);
             st = clock();
         }
@@ -103,7 +104,7 @@ void init() {
     }
 
     srand((unsigned int)time(0));
-    
+
     fillNextBlock();
     fillNextBlock();
 
@@ -151,7 +152,7 @@ void fillNextBlock() {
     sort(random.begin(), random.end(), [](auto a, auto b) {
         if (a.second > b.second) return true;
         else return false;
-    });
+        });
 
     for (int i = 0; i < 7; i++) {
         BlockData tmp;
@@ -190,8 +191,10 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
     int a = x;              //원래 xy좌표 저장
     int b = y;
 
-    cout << "\b\b";             
-    cout << NONE_MARK;
+    //    cout << "\b\b";
+    //    cout << NONE_MARK;
+
+    erase_block(x, y);
 
     //@todo: up으로 회전 추가
 
@@ -254,23 +257,29 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
             fillNextBlock();
     }
 
-    gotoxy(x, y);
+    //    gotoxy(x, y);
 
-    //cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
-    draw_block(a, b);
+        //cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
+    draw_block();
 }
-
-void draw_block(int a, int b) {
-    int X, Y, A, B;
+void erase_block(int a, int b) {
+    int A, B;
     for (int i = 0; i < 4; i++) {
-        X = x + blockShape[nowBlock.type][nowBlock.rot][i][0];
-        Y = y + blockShape[nowBlock.type][nowBlock.rot][i][1];
         A = a + blockShape[nowBlock.type][nowBlock.rot][i][0];
         B = b + blockShape[nowBlock.type][nowBlock.rot][i][1];
 
         gotoxy(A, B);
-        cout << "\b";
-        cout << NONE_MARK << NONE_MARK;
+        //        cout << "\b";
+        cout << NONE_MARK;
+    }
+}
+
+void draw_block() {
+    int X, Y;
+    for (int i = 0; i < 4; i++) {
+        X = x + blockShape[nowBlock.type][nowBlock.rot][i][0];
+        Y = y + blockShape[nowBlock.type][nowBlock.rot][i][1];
+
         gotoxy(X, Y);
         cout << BLOCK_MARK;
     }
@@ -292,7 +301,7 @@ void draw_frame() {         //게임 화면 틀
 
         cout << WALL_MARK;                          //왼쪽 벽
         for (int j = 0; j < FR_SIZE_WIDTH; j++) {
-            if (mapData[19-i].first[j])
+            if (mapData[19 - i].first[j])
                 cout << BLOCK_MARK;
             else
                 cout << NONE_MARK;
@@ -397,7 +406,7 @@ void game_over() {
         // mapData 초기화
         mapData.clear();
         for (int i = 0; i < 23; i++) {
-            mapData.push_back(make_pair(emptyLine, 0));	
+            mapData.push_back(make_pair(emptyLine, 0));
         }
 
         start();
