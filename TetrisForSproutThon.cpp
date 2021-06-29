@@ -20,6 +20,7 @@ void exit_game();
 void player_move(int);
 void draw_board(bool);
 void erase_block(int, int);
+void draw_nextBlock();
 
 struct BlockData {
     int type;
@@ -161,7 +162,7 @@ void fillNextBlock() {
     }
 }
 
-void draw_board(bool tf) {            //@todo: 보드를 다시 그릴 때 이동중인 블럭이 지워지지 않는지 확인
+void draw_board(bool tf) {           
         //true: 쌓아서 그리기만 false: 전체 다시 그리기
     if (tf) {
         for (int i = 1; i <= FR_SIZE_HEIGHT; i++) {
@@ -197,8 +198,8 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
     switch (ch) {
     case UP:
         nowBlock.rot++;
-        if (nowBlock.rot > 4)
-            nowBlock.rot = 1;
+        if (nowBlock.rot == 4)
+            nowBlock.rot = 0;
         break;
     case DOWN:
         y++;
@@ -231,7 +232,7 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
         }
     }
 
-    if (x == a && y == b && ch == DOWN) { //움직이지 못했을 경우   //@todo: 공중에서 옆벽면에 비빌 때 cnt++되어 공중에 블럭이 생기는 case 발생
+    if (x == a && y == b && ch == DOWN) { //움직이지 못했을 경우 
         cnt++;
     }
 
@@ -251,6 +252,7 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
         getOutCnt++;
         if (getOutCnt % 7 == 0)     //7개 뽑아 썼으면 fillNextBlock 호출
             fillNextBlock();
+        draw_nextBlock();
     }
 
         //cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
@@ -265,6 +267,28 @@ void erase_block(int a, int b) {
         gotoxy(A, B);
         cout << NONE_MARK;
     }
+}
+
+void draw_nextBlock() {
+    int a, b;
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            a = 44 + blockShape[nowBlock.type][0][j][0];
+            b = 6 * i + 3 + blockShape[nowBlock.type][0][j][1];
+
+            gotoxy(a, b);
+            cout << NONE_MARK;
+        }
+        for (int k = 0; k < 4; k++) {
+            a = 44 + blockShape[nextBlock[i].type][0][k][0];
+            b = 6 * i + 3 + blockShape[nextBlock[i].type][0][k][1];
+
+            gotoxy(a, b);
+            cout << BLOCK_MARK;
+        }
+    }
+
 }
 
 void draw_block() {
@@ -309,9 +333,7 @@ void draw_frame() {         //게임 화면 틀
     for (int i = 0; i < FR_SIZE_WIDTH + 2; i++)
         cout << WALL_MARK;
 
-    gotoxy(x, y);
-    cout << BLOCK_MARK;                 //처음 플레이어 위치 표시용 (플레이어 움직임 시연용)
-
+    draw_nextBlock();
 }
 
 void start() {
