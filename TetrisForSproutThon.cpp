@@ -191,9 +191,6 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
     int a = x;              //원래 xy좌표 저장
     int b = y;
 
-    //    cout << "\b\b";
-    //    cout << NONE_MARK;
-
     erase_block(x, y);
 
     //@todo: up으로 회전 추가
@@ -257,8 +254,6 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
             fillNextBlock();
     }
 
-    //    gotoxy(x, y);
-
         //cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
     draw_block();
 }
@@ -269,7 +264,6 @@ void erase_block(int a, int b) {
         B = b + blockShape[nowBlock.type][nowBlock.rot][i][1];
 
         gotoxy(A, B);
-        //        cout << "\b";
         cout << NONE_MARK;
     }
 }
