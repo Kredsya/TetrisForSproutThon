@@ -33,6 +33,8 @@ const int UP = 72;
 const int DOWN = 80;
 const int LEFT = 75;
 const int RIGHT = 77;
+const int zKEY = 122;
+const int ZKEY = 90;
 const int SPACE = 32;
 const int ESC = 27;
 
@@ -118,13 +120,13 @@ int blockShape[13][4][4][2] = {	// [BlockData.type][BlockData.rot][number of blo
 			{-2, 0}, {0, 0}, {2, 0}, {4, 0}
 		},
 		{	//rot = Right = 1
-			{2, -1}, {2, 0}, {2, 1}, {2, -2}
+			{2, -1}, {2, 0}, {2, 1}, {2, 2}
 		},
 		{	//rot = 2
 			{-2, 1}, {0, 1}, {2, 1}, {4, 1}
 		},
 		{	//rot = Left = 3
-			{-2, -1}, {-2, 0}, {-2, 1}, {-2, -2}
+			{0, -1}, {0, 0}, {0, 1}, {0, 2}
 		}
 	},	//I
 	{	//L

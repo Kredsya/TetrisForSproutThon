@@ -27,7 +27,7 @@ struct BlockData {
     int rot = 0;
 };
 
-int x = 26, y = 1;
+int x = 26, y = 2;      //y를 1 낮춘곳에서 블럭을 스폰하여 윗줄 지워짐 현상 제거
 int key;
 int cnt = 0;        //쌓기 판정용
 int score = 0;               // 점수
@@ -58,6 +58,9 @@ int main() {
             if (ch == ESC) {     //메뉴
                 play_menu();
             }
+            else if (ch == zKEY || ch == ZKEY) {
+                player_move(ch);
+            }
             else if (ch == 224) {                       //방향키 입력
                 ch = _getch();
                 player_move(ch);               //방향키는 224->n으로 입력되어 space는 따로 구현
@@ -65,7 +68,7 @@ int main() {
             else if (ch == SPACE) {                 //@todo: space로 hard drop 구현
                 while (true) {
                     player_move(DOWN);
-                    if (x == 26 && y == 1)
+                    if (x == 26 && y == 2)
                         break;
                 }
             }
@@ -152,7 +155,7 @@ void fillNextBlock() {
     random.push_back(make_pair(10, rand()));
     random.push_back(make_pair(11, rand()));
     random.push_back(make_pair(12, rand()));
-
+    
     sort(random.begin(), random.end(), [](auto a, auto b) {
         if (a.second > b.second) return true;
         else return false;
@@ -197,9 +200,13 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
 
     erase_block(x, y);
 
-    //@todo: up으로 회전 추가
-
     switch (ch) {
+    case zKEY:
+    case ZKEY:
+        nowBlock.rot--;
+        if (nowBlock.rot == -1)
+            nowBlock.rot = 3;
+        break;
     case UP:
         nowBlock.rot++;
         if (nowBlock.rot == 4)
@@ -212,8 +219,10 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
         break;
     case LEFT:
         x -= 2;
-        if (x < 18)
+        if (x < 18 && nowBlock.type != I)   //I블럭에 대한 특별 case 마련
             x = 18;
+        else if (x == 16)
+            x = 16;
         break;
     case RIGHT:
         x += 2;
@@ -235,6 +244,7 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
             break;
         }
     }
+
     if (mapData[19].second != 0 && x == a && y == b && ch == DOWN)
         game_over();
 
@@ -251,7 +261,7 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
             mapData[20 - y - dy].second += 1;
         }
         draw_board(true);
-        x = 26, y = 1;
+        x = 26, y = 2;
         score += 10;                //블럭 쌓아서 점수 획득
         gotoxy(0, 0);
         cout << "SCORE: " << score;
