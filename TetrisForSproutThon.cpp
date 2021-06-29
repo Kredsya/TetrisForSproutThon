@@ -234,6 +234,8 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
             break;
         }
     }
+    if (mapData[19].second != 0 && x == a && y == b && ch == DOWN)
+        game_over();
 
     if (x == a && y == b && ch == DOWN) { //움직이지 못했을 경우 
         cnt++;
@@ -416,7 +418,7 @@ void game_over() {
     cout << " ■   ■ ■  ■ ■  ■ ■       ■  ■  ■■  ■     ■ ■\n";
     cout << "  ■■■ ■  ■ ■  ■ ■■■    ■■    ■   ■■■ ■  ■\n\n\n\n";
     cout << "                         SCORE: " << score << "\n\n";
-    cout << "                    Continue? ( y / n )";
+    cout << "                    Continue? ( y / n ): ";
 
     while (ask != 'y' && ask != 'n' && ask != ESC) {
         ask = _getch();
