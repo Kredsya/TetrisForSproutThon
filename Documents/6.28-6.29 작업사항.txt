@@ -1,0 +1,31 @@
+1. struct BlockData 문법 변경
+	- 기존의 typedef 사용보단 바로 struct BlockData로 변경
+
+2. getOutCnt 변수 추가
+	- 블럭을 몇 개 썼는지 카운트하는 변수
+	- 7의 배수가 될 때마다 fillNextBlock() 호출하는데 도움을 주는 변수
+
+3. BlockData nowBlock 추가
+	- 지금 떨어지고 있는 블럭에 대한 정보를 담는 구조체
+
+4. fillNextBlock() 조금 변화
+	- 기존에 반복문으로 random 벡터를 채우던 거를 7줄로 늘어뜨림
+	- blockShape의 빈 인덱스를 참조하는 버그를 해결하기 위함
+
+5. player_move 함수 中 움직임 판정 대량 추가
+	- switch문 아래는 거의 다 수정이 됐다고 보면 됩니다
+	- for문 -> mapData 기반 블럭이 움직일 수 있는지 판단하는 for문
+		- dx와 dy에 blockShape의 값을 불러오고 이를 두 개의 if문으로 [벽을 넘어가는지]와 [블럭이 이미 있는지]를 분별
+	- if(cnt==3) if문
+		- for(i=0; i<4; i++)는 mapData 갱신시키는 for문
+		- 블럭이 쌓였을 때 실행되는 if문이므로 nextBlock.front를 nowBlock에 저장하는 등의 작업도 이루어짐
+	- 마지막에 draw_block 추가
+		- 파라미터는 이동 이전 좌표를 담는 a, b
+
+6. draw_block 함수
+	- blockShape의 delta location을 반영한 X, Y, A, B 변수 생성 및 초기화
+	- 그 이후는 gotoxy문과 함께 이전 위치 블럭은 지우고 새로운 위치의 블럭을 그려야하는데 버그가 발생중입니다
+		- 옆면에 다가가면 벽이 늘어난다거나
+		- 블럭끼리 반칸씩 겹쳐서 보인다거나
+	- esc를 눌러 메뉴에 들어갔다 나오면 화면은 정상적으로 출력됩니다
+		- 즉, mapData에 이상은 없지만, draw_block 함수가 이상하게 작동하는 중

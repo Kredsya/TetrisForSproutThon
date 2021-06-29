@@ -28,5 +28,8 @@
     <Text Include="Documents\6.27 18시56분까지의 작업내용 정리.txt">
       <Filter>리소스 파일</Filter>
     </Text>
+    <Text Include="Documents\6.28-6.29 작업사항.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
   </ItemGroup>
 </Project>

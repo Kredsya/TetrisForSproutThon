@@ -14,13 +14,13 @@ void start();
 void fillNextBlock();
 void play_menu();
 void draw_frame();
-void draw_block(BlockData, int, int);
+void draw_block(int, int);
 void game_over();
 void exit_game();
 void player_move(int);
 void draw_board(bool);
 
-typedef struct BlockData {
+struct BlockData {
     int type;
     int rot = 0;
 };
@@ -30,11 +30,13 @@ int key;
 int cnt = 0;        //쌓기 판정용
 bool fall = false;
 int score = 0;               // 점수
+int getOutCnt = 1;
 vector<pair<vector<bool>, int>> mapData;
 vector<bool> emptyLine(10, false);	//vector constructor 중 하나 : 변수명(개수, 초기화할 데이터);
 deque<BlockData> nextBlock;
 BlockData fallingBlock;
 BlockData holdBlock;
+BlockData nowBlock;
 
 int main() {
     int ch;
@@ -45,6 +47,9 @@ int main() {
     init();
     title();
     start();
+
+    nowBlock = nextBlock.front();
+    nextBlock.pop_front();
 
     while (1) {                       ///////     게임 중 모든 클릭을 담당
         if (_kbhit()) {
@@ -135,8 +140,13 @@ void title() {
 
 void fillNextBlock() {
     vector<pair<int, int>> random;
-    for (int i = 0; i < 7; i++) 
-        random.push_back(make_pair(i, rand()));
+    random.push_back(make_pair(1, rand()));
+    random.push_back(make_pair(4, rand()));
+    random.push_back(make_pair(5, rand()));
+    random.push_back(make_pair(6, rand()));
+    random.push_back(make_pair(10, rand()));
+    random.push_back(make_pair(11, rand()));
+    random.push_back(make_pair(12, rand()));
 
     sort(random.begin(), random.end(), [](auto a, auto b) {
         if (a.second > b.second) return true;
@@ -206,10 +216,21 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
         break;
     }
 
-    if (mapData[20 - y].first[(x - 18) / 2])          //@todo: mapData 비교로 못 움직이게 추가
-        x = a, y = b;
+    for (int i = 0; i < 4; i++) {                               //mapData 기반 블럭 움직임 판정 for문
+        int dx = blockShape[nowBlock.type][nowBlock.rot][i][0];
+        int dy = blockShape[nowBlock.type][nowBlock.rot][i][1];
 
-    if (x == a && y == b && fall) { //움직이지 못했을 경우
+        if (20 - y - dy < 0 || (x + dx - 18) / 2 < 0 || (x + dx - 18) / 2 >= 10) {
+            x = a, y = b;
+            break;
+        }
+        if (mapData[20 - y - dy].first[(x + dx - 18) / 2]) {
+            x = a, y = b;
+            break;
+        }
+    }
+
+    if (x == a && y == b && fall) { //움직이지 못했을 경우   //@todo: 공중에서 옆벽면에 비빌 때 cnt++되어 공중에 블럭이 생기는 case 발생
         cnt++;
         fall = false;
     }
@@ -217,34 +238,46 @@ void player_move(int ch) {       //*다 쌓이면 game_over로 이동
     if (cnt == 3) {
         cnt = 0;
         fall = false;
-        mapData[20 - y].first[(x - 18) / 2] = 1;
-        mapData[20 - y].second += 1;
-        draw_board(1);
+        for (int i = 0; i < 4; i++) {       //mapData 갱신
+            int dx = blockShape[nowBlock.type][nowBlock.rot][i][0];
+            int dy = blockShape[nowBlock.type][nowBlock.rot][i][1];
+            mapData[20 - y - dy].first[(x + dx - 18) / 2] = 1;
+            mapData[20 - y - dy].second += 1;
+        }
+        draw_board(true);
         x = 26, y = 1;
         score += 10;                //블럭 쌓아서 점수 획득
+        nowBlock = nextBlock.front();   //다음 블럭을 뽑아놓기
+        nextBlock.pop_front();
+        getOutCnt++;
+        if (getOutCnt % 7 == 0)     //7개 뽑아 썼으면 fillNextBlock 호출
+            fillNextBlock();
     }
 
     gotoxy(x, y);
 
-    //draw_block()으로 변경
-    cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
-    
-
-                               //@todo: 옮길 수 있는 것인지에 대한 체크가 선행되어야 함
-                                //@todo: draw_block으로 블럭 그리기를 할 예정
+    //cout << BLOCK_MARK;        //처음 플레이어 위치 표시용 (플레이어 움직임 구현 시연용)
+    draw_block(a, b);
 }
 
-void draw_block(BlockData block, int x, int y) {
+void draw_block(int a, int b) {
+    int X, Y, A, B;
     for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
+        X = x + blockShape[nowBlock.type][nowBlock.rot][i][0];
+        Y = y + blockShape[nowBlock.type][nowBlock.rot][i][1];
+        A = a + blockShape[nowBlock.type][nowBlock.rot][i][0];
+        B = b + blockShape[nowBlock.type][nowBlock.rot][i][1];
 
-        }
+        gotoxy(A, B);
+        cout << "\b";
+        cout << NONE_MARK << NONE_MARK;
+        gotoxy(X, Y);
+        cout << BLOCK_MARK;
     }
 }
 
 void draw_frame() {         //게임 화면 틀
     system("cls");
-    x = 26, y = 1;           //좌표 초기화
 
     for (int i = 0; i < 8; i++)
         cout << NONE_MARK;
@@ -259,7 +292,7 @@ void draw_frame() {         //게임 화면 틀
 
         cout << WALL_MARK;                          //왼쪽 벽
         for (int j = 0; j < FR_SIZE_WIDTH; j++) {
-            if (mapData[i].first[j])
+            if (mapData[19-i].first[j])
                 cout << BLOCK_MARK;
             else
                 cout << NONE_MARK;
@@ -326,8 +359,7 @@ void play_menu() {
     while (ch != 'r' && ch != 'q') {
         ch = _getch();
     }
-    if (ch == 'r') {            //게임 진행
-        x = 26;    y = 1;             //좌표 초기화         
+    if (ch == 'r') {            //게임 진행      
         draw_frame();
     }
     else if (ch == 'q')

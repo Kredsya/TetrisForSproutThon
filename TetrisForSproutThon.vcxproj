@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\6.27 18시56분까지의 작업내용 정리.txt" />
+    <Text Include="Documents\6.28-6.29 작업사항.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
